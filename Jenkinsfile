@@ -12,7 +12,8 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'pwd'
+                sh 'python3 -m venv .venv'
+                sh '.venv/bin/activate'
             }
         }
     }
