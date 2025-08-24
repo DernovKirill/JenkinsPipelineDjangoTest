@@ -14,6 +14,7 @@ pipeline {
             steps {
                 sh 'sudo apt-get update && sudo apt-get install -y python3.11-venv'
                 sh 'python3 -m venv .venv'
+                sh 'chmod +x .venv/bin/activate'
                 sh '.venv/bin/activate'
             }
         }
