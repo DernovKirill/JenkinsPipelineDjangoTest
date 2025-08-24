@@ -10,5 +10,10 @@ pipeline {
                 git branch: 'main', credentialsId: 'github-token', url: 'https://github.com/DernovKirill/django_tutorial.git'
             }
         }
+        stage('Build') {
+            steps {
+                sh 'pwd'
+            }
+        }
     }
 }
