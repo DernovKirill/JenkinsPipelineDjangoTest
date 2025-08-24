@@ -20,7 +20,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh '.venv/bin/pip install install -r requirements.txt'
+                sh '.venv/bin/pip install -r requirements.txt'
             }
         }
     }
