@@ -11,25 +11,28 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main', credentialsId: 'github-token', url: 'https://github.com/DernovKirill/django_tutorial.git'
+                sh 'dpkg -s ${PYTHON_VENV} >/dev/null 2>&1'
             }
         }
         stage('Install Python Dependencies') {
-            steps {
-                echo 'dpkg -s ${PYTHON_VENV} >/dev/null 2>&1'
-                when {
+            when {
                     expression {
-                        return
+                        return sh (
+                            script: "dpkg -s ${env.PYTHON_VENV} >/dev/null 2>&1",
+                            returnStatus: true
+                        ) != 0
                     }
                 }
+            steps {
                 sh 'sudo apt-get update && sudo apt-get install -y ${env.PYTHON_VENV}'
-                sh 'python3 -m venv .venv'
-                sh 'chmod +x .venv/bin/activate'
-                sh '.venv/bin/activate'
-                sh 'python3 -m pip install --upgrade pip'
             }
         }
         stage('Build') {
             steps {
+                sh 'python3 -m venv .venv'
+                sh 'chmod +x .venv/bin/activate'
+                sh '.venv/bin/activate'
+                sh 'python3 -m pip install --upgrade pip'
                 sh '.venv/bin/pip install -r requirements.txt'
             }
         }
