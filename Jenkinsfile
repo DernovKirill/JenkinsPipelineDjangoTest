@@ -30,6 +30,7 @@ pipeline {
             steps {
                 sh 'python3 -m venv .venv'
                 sh '.venv/bin/pip install -r requirements.txt'
+                sh '.venv/bin/pip install -r requirements-dev.txt'
             }
         }
         stage('Tests') {
@@ -37,7 +38,12 @@ pipeline {
                 sh '.venv/bin/python mysite/manage.py test polls'
             }
         }
-        stage('Run app') {
+        stage('Pylint check') {
+            steps {
+                sh '.venv/bin/pylint --load-plugins=pylint_django mysite/'
+            }
+        }
+        stage('Check app') {
             steps {
                 sh '.venv/bin/python mysite/manage.py check'
             }
