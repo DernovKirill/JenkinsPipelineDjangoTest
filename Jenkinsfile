@@ -31,8 +31,6 @@ pipeline {
                 sh 'python3 -m venv .venv'
                 sh 'chmod +x .venv/bin/activate'
                 sh '.venv/bin/activate'
-                sh '.venv/bin/python -m ensurepip --upgrade'
-                sh 'python3 -m pip install --upgrade pip'
                 sh '.venv/bin/pip install -r requirements.txt'
             }
         }
