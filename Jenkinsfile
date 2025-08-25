@@ -36,7 +36,7 @@ pipeline {
         }
         stage('Tests') {
             steps {
-                sh 'python3 mysite/manage.py test polls'
+                sh '.venv/bin/python mysite/manage.py test polls'
             }
         }
     }
