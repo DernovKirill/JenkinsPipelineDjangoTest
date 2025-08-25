@@ -26,7 +26,7 @@ pipeline {
                 sh 'sudo apt-get update && sudo apt-get install -y ${env.PYTHON_VENV}'
             }
         }
-        stage('Build') {
+        stage('Install requirements') {
             steps {
                 sh 'python3 -m venv .venv'
                 sh '.venv/bin/pip install -r requirements.txt'
@@ -35,6 +35,11 @@ pipeline {
         stage('Tests') {
             steps {
                 sh '.venv/bin/python mysite/manage.py test polls'
+            }
+        }
+        stage('Run app') {
+            steps {
+                sh '.venv/bin/python mysite/manage.py runserver'
             }
         }
     }
