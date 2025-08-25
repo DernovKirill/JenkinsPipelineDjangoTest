@@ -11,7 +11,6 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main', credentialsId: 'github-token', url: 'https://github.com/DernovKirill/django_tutorial.git'
-                sh 'dpkg -s ${PYTHON_VENV} >/dev/null 2>&1'
             }
         }
         stage('Install Python Dependencies') {
@@ -32,6 +31,7 @@ pipeline {
                 sh 'python3 -m venv .venv'
                 sh 'chmod +x .venv/bin/activate'
                 sh '.venv/bin/activate'
+                sh '.venv/bin/python -m ensurepip --upgrade'
                 sh 'python3 -m pip install --upgrade pip'
                 sh '.venv/bin/pip install -r requirements.txt'
             }
