@@ -29,8 +29,6 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'python3 -m venv .venv'
-                sh 'chmod +x .venv/bin/activate'
-                sh '.venv/bin/activate'
                 sh '.venv/bin/pip install -r requirements.txt'
             }
         }
