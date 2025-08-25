@@ -41,7 +41,11 @@ pipeline {
         }
         stage('Pylint check') {
             steps {
-                sh '.venv/bin/pylint --load-plugins=pylint_django mysite/ --output-format=json --fail-under=${env.LINT_FAIL_SCORE} > pylint-report.json'
+                sh """
+                    .venv/bin/pylint --load-plugins=pylint_django mysite/ \
+                        --output-format=json --fail-under=${env.LINT_FAIL_SCORE} \
+                        > pylint-report.json
+                """
             }
         }
         stage('Check app') {
