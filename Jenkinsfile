@@ -6,6 +6,7 @@ pipeline {
     }
     environment {
         PYTHON_VENV = 'python3.11-venv'
+        LINT_FAIL_SCORE = '7.0'
     }
     stages {
         stage('Checkout') {
@@ -40,7 +41,7 @@ pipeline {
         }
         stage('Pylint check') {
             steps {
-                sh '.venv/bin/pylint --load-plugins=pylint_django mysite/'
+                sh '.venv/bin/pylint --load-plugins=pylint_django mysite/ --output-format=json > pylint-report.json --fail-under=${env.LINT_FAIL_SCORE}'
             }
         }
         stage('Check app') {
