@@ -39,7 +39,7 @@ pipeline {
         }
         stage('Run app') {
             steps {
-                sh '.venv/bin/python mysite/manage.py runserver'
+                sh '.venv/bin/python mysite/manage.py check'
             }
         }
     }
