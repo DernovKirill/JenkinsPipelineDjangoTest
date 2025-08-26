@@ -48,6 +48,15 @@ pipeline {
                 '''
             }
         }
+        stage('Your Stage') {
+            steps {
+                sh '''
+                    echo "Shell: $0"
+                    VAR="hello"
+                    echo ${VAR//l/x}
+                '''
+            }
+        }
         stage('OWASP Dependency-Check') {
             steps {
                 sh '''
