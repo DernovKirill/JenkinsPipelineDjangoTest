@@ -48,20 +48,11 @@ pipeline {
                 """
             }
         }
-        stage('Your Stage') {
-            steps {
-                sh """
-                    echo "Shell: $0"
-                    VAR="hello"
-                    echo ${VAR//l/x}
-                """
-            }
-        }
         stage('OWASP Dependency-Check') {
             steps {
                 sh """
                     docker run --rm \
-                      -v $(pwd):/src \
+                      -v ${WORKSPACE}:/src \
                       owasp/dependency-check \
                       --scan /src \
                       --format "HTML" \
