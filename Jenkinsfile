@@ -48,6 +48,11 @@ pipeline {
                 """
             }
         }
+        stage('Bandit check') {
+            steps {
+                sh '.venv/bin/bandit -r mysite/ -f json -o bandit-report.json -lll'
+            }
+        }
         stage('Check app') {
             steps {
                 sh '.venv/bin/python mysite/manage.py check'
