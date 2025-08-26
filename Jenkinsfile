@@ -51,14 +51,30 @@ pipeline {
         stage('OWASP Dependency-Check') {
             steps {
                 sh """
+                    mkdir -p ${WORKSPACE}/dependency-check-data
                     docker run --rm \
                       -v ${WORKSPACE}:/src \
+                      -v ${WORKSPACE}/dependency-check-data:/usr/share/dependency-check/data \
                       owasp/dependency-check \
+                      --data /usr/share/dependency-check/data \
+                      --project "DjangoTutorial" \
                       --scan /src \
                       --format "HTML" \
                       --out /src \
                       --enableExperimental
                 """
+            }
+        }
+        stage('Dependency-Check Publish Report') {
+            steps {
+                publishHTML(target: [
+                    reportName : 'OWASP Dependency-Check Report',
+                    reportDir  : '',
+                    reportFiles: 'dependency-check-report.html',
+                    keepAll    : true,
+                    alwaysLinkToLastBuild: true,
+                    allowMissing: false
+                ])
             }
         }
         stage('Bandit check') {
