@@ -41,16 +41,16 @@ pipeline {
         }
         stage('Pylint check') {
             steps {
-                sh """
+                sh '''
                     .venv/bin/pylint --load-plugins=pylint_django mysite/ \
                         --output-format=json --fail-under=${env.LINT_FAIL_SCORE} \
                         > pylint-report.json
-                """
+                '''
             }
         }
         stage('OWASP Dependency-Check') {
             steps {
-                sh """
+                sh '''
                     docker run --rm \
                       -v $(pwd):/src \
                       owasp/dependency-check \
@@ -58,7 +58,7 @@ pipeline {
                       --format "HTML" \
                       --out /src \
                       --enableExperimental
-                """
+                '''
             }
         }
         stage('Bandit check') {
