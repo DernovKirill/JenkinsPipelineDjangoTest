@@ -48,6 +48,19 @@ pipeline {
                 """
             }
         }
+        stage('OWASP Dependency-Check') {
+            steps {
+                sh """
+                    docker run --rm \
+                      -v $(pwd):/src \
+                      owasp/dependency-check \
+                      --scan /src \
+                      --format "HTML" \
+                      --out /src \
+                      --enableExperimental
+                """
+            }
+        }
         stage('Bandit check') {
             steps {
                 sh '.venv/bin/bandit -r mysite/ -f json -o bandit-report.json -lll'
