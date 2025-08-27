@@ -52,6 +52,9 @@ pipeline {
             steps {
                 sh """
                     mkdir -p ${WORKSPACE}/dependency-check-data
+                    chmod -R 777 ${WORKSPACE}/dependency-check-data
+                    mkdir -p ${WORKSPACE}/reports
+                    chmod -R 777 ${WORKSPACE}/reports
                     docker run --rm \
                       -v ${WORKSPACE}:/src \
                       -v ${WORKSPACE}/dependency-check-data:/usr/share/dependency-check/data \
@@ -60,7 +63,7 @@ pipeline {
                       --project "DjangoTutorial" \
                       --scan /src \
                       --format "HTML" \
-                      --out /src \
+                      --out /src/reports \
                       --enableExperimental
                 """
             }
@@ -69,7 +72,7 @@ pipeline {
             steps {
                 publishHTML(target: [
                     reportName : 'OWASP Dependency-Check Report',
-                    reportDir  : '',
+                    reportDir  : 'reports',
                     reportFiles: 'dependency-check-report.html',
                     keepAll    : true,
                     alwaysLinkToLastBuild: true,
