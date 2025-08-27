@@ -45,7 +45,7 @@ pipeline {
                     .venv/bin/pylint --load-plugins=pylint_django mysite/ \
                         --output-format=json --fail-under=${env.LINT_FAIL_SCORE} \
                         > pylint-report.json
-                    pylint-json2html -f json -o pylint-report.html pylint-report.json
+                    .venv/bin/pylint-json2html -f json -o pylint-report.html pylint-report.json
                 """
                 publishHTML(target: [
                     reportName : 'Pylint Report',
