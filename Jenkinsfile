@@ -45,7 +45,16 @@ pipeline {
                     .venv/bin/pylint --load-plugins=pylint_django mysite/ \
                         --output-format=json --fail-under=${env.LINT_FAIL_SCORE} \
                         > pylint-report.json
+                    pylint-json2html -f json -o pylint-report.html pylint-report.json
                 """
+                publishHTML(target: [
+                    reportName : 'Pylint Report',
+                    reportDir  : '',
+                    reportFiles: 'pylint-report.html',
+                    keepAll    : true,
+                    alwaysLinkToLastBuild: true,
+                    allowMissing: false
+                ])
             }
         }
         stage('OWASP Dependency-Check') {
@@ -83,6 +92,15 @@ pipeline {
         stage('Bandit check') {
             steps {
                 sh '.venv/bin/bandit -r mysite/ -f json -o bandit-report.json -lll'
+                sh 'bandit-to-html -i bandit-report.json -o bandit-report.html'
+                publishHTML(target: [
+                    reportName : 'Bandit Security Check Report',
+                    reportDir  : '',
+                    reportFiles: 'bandit-report.html',
+                    keepAll    : true,
+                    alwaysLinkToLastBuild: true,
+                    allowMissing: false
+                ])
             }
         }
         stage('Check app') {
