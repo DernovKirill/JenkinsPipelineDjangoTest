@@ -52,9 +52,9 @@ pipeline {
             steps {
                 sh """
                     mkdir -p ${WORKSPACE}/dependency-check-data
-                    chmod -R 777 ${WORKSPACE}/dependency-check-data
+                    chmod 777 ${WORKSPACE}/dependency-check-data
                     mkdir -p ${WORKSPACE}/reports
-                    chmod -R 777 ${WORKSPACE}/reports
+                    chmod 777 ${WORKSPACE}/reports
                     docker run --rm \
                       -v ${WORKSPACE}:/src \
                       -v ${WORKSPACE}/dependency-check-data:/usr/share/dependency-check/data \
