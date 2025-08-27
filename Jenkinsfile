@@ -91,8 +91,7 @@ pipeline {
         }
         stage('Bandit check') {
             steps {
-                sh '.venv/bin/bandit -r mysite/ -f json -o bandit-report.json -lll'
-                sh 'bandit-to-html -i bandit-report.json -o bandit-report.html'
+                sh '.venv/bin/bandit -r mysite/ -f html -o bandit-report.html -lll'
                 publishHTML(target: [
                     reportName : 'Bandit Security Check Report',
                     reportDir  : '',
