@@ -57,37 +57,47 @@ pipeline {
                 ])
             }
         }
-        stage('OWASP Dependency-Check') {
+//         stage('OWASP Dependency-Check') {
+//             steps {
+//                 sh """
+//                     mkdir -p ${WORKSPACE}/dependency-check-data
+//                     chmod 777 ${WORKSPACE}/dependency-check-data
+//                     mkdir -p ${WORKSPACE}/reports
+//                     chmod 777 ${WORKSPACE}/reports
+//                     docker run --rm \
+//                       -v ${WORKSPACE}:/src \
+//                       -v ${WORKSPACE}/dependency-check-data:/usr/share/dependency-check/data \
+//                       owasp/dependency-check \
+//                       --data /usr/share/dependency-check/data \
+//                       --project "DjangoTutorial" \
+//                       --scan /src \
+//                       --format "HTML" \
+//                       --out /src/reports \
+//                       --enableExperimental
+//                       --failOnCVSS 7
+//                 """
+//             }
+//         }
+//         stage('Dependency-Check Publish Report') {
+//             steps {
+//                 publishHTML(target: [
+//                     reportName : 'OWASP Dependency-Check Report',
+//                     reportDir  : 'reports',
+//                     reportFiles: 'dependency-check-report.html',
+//                     keepAll    : true,
+//                     alwaysLinkToLastBuild: true,
+//                     allowMissing: false
+//                 ])
+//             }
+//         }
+        stage('OWASP Dependency-Check Vulnerabilities') {
             steps {
-                sh """
-                    mkdir -p ${WORKSPACE}/dependency-check-data
-                    chmod 777 ${WORKSPACE}/dependency-check-data
-                    mkdir -p ${WORKSPACE}/reports
-                    chmod 777 ${WORKSPACE}/reports
-                    docker run --rm \
-                      -v ${WORKSPACE}:/src \
-                      -v ${WORKSPACE}/dependency-check-data:/usr/share/dependency-check/data \
-                      owasp/dependency-check \
-                      --data /usr/share/dependency-check/data \
-                      --project "DjangoTutorial" \
-                      --scan /src \
-                      --format "HTML" \
-                      --out /src/reports \
-                      --enableExperimental
-                      --failOnCVSS 7
-                """
-            }
-        }
-        stage('Dependency-Check Publish Report') {
-            steps {
-                publishHTML(target: [
-                    reportName : 'OWASP Dependency-Check Report',
-                    reportDir  : 'reports',
-                    reportFiles: 'dependency-check-report.html',
-                    keepAll    : true,
-                    alwaysLinkToLastBuild: true,
-                    allowMissing: false
-                ])
+                dependencyCheck additionalArguments: '''
+                        -o './'
+                        -s './'
+                        -f 'ALL'
+                        --prettyPrint''', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
+                dependencyCheckPublisher pattern: 'dependency-check-report.xml'
             }
         }
         stage('Bandit check') {
