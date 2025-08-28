@@ -74,6 +74,7 @@ pipeline {
                       --format "HTML" \
                       --out /src/reports \
                       --enableExperimental
+                      --failOnCVSS 7
                 """
             }
         }
