@@ -92,7 +92,8 @@ pipeline {
 //         }
         stage('OWASP Dependency-Check Vulnerabilities') {
             steps {
-                dependencyCheck additionalArguments: '--scan ./ --format HTML --format XML --project "DjangoTutorial"'
+                dependencyCheck additionalArguments: '--scan ./ --format HTML --format XML --project "DjangoTutorial"',
+                    odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
                 dependencyCheckPublisher pattern: 'dependency-check-report.xml'
             }
         }
