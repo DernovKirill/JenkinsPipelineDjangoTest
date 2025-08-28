@@ -92,11 +92,7 @@ pipeline {
 //         }
         stage('OWASP Dependency-Check Vulnerabilities') {
             steps {
-                dependencyCheck additionalArguments: """
-                    -o './'
-                    -s './'
-                    -f 'ALL'
-                    --prettyPrint""", odcInstallation: 'OWASP-DC'
+                dependencyCheck additionalArguments: '--scan ./ --format HTML --format XML --project "DjangoTutorial"'
                 dependencyCheckPublisher pattern: 'dependency-check-report.xml'
             }
         }
